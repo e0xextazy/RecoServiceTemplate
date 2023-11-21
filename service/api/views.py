@@ -27,6 +27,51 @@ async def health() -> str:
     path="/reco/{model_name}/{user_id}",
     tags=["Recommendations"],
     response_model=RecoResponse,
+    responses={
+        404: {
+            "description": "User or Model not found",
+            "content": {
+                "application/json": {
+                    "example": [
+                        {
+                            "error_key": "model_not_found",
+                            "error_message": "Model {model_name} not found",
+                            "error_loc": "null",
+                        },
+                        {
+                            "error_key": "user_not_found",
+                            "error_message": "User {iser_id} not found",
+                            "error_loc": "null",
+                        },
+                    ]
+                }
+            },
+        },
+        401: {
+            "description": "Bad authorization",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "error_key": "bad_authorization",
+                        "error_message": "Bad auth token",
+                        "error_loc": "null",
+                    }
+                }
+            },
+        },
+        422: {
+            "description": "The server was unable to process the request because it contains invalid data",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "error_key": "missing",
+                        "error_message": "Field required",
+                        "error_loc": ["query", "token"],
+                    }
+                }
+            },
+        },
+    },
 )
 async def get_reco(
     request: Request,

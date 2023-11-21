@@ -34,7 +34,9 @@ def create_app(config: ServiceConfig) -> FastAPI:
     setup_logging(config)
     setup_asyncio(thread_name_prefix=config.service_name)
 
-    app = FastAPI(debug=False)
+    app = FastAPI(
+        debug=False, title="Recommenders System", description="This project covering RecSys course from ITMO."
+    )
     app.state.k_recs = config.k_recs
     app.state.auth_token = config.auth_token
     app.state.known_models = KNOWN_MODELS
