@@ -6,6 +6,7 @@ import uvloop
 from fastapi import FastAPI
 
 from ..log import app_logger, setup_logging
+from ..recommenders_models import KNOWN_MODELS
 from ..settings import ServiceConfig
 from .exception_handlers import add_exception_handlers
 from .middlewares import add_middlewares
@@ -36,6 +37,7 @@ def create_app(config: ServiceConfig) -> FastAPI:
     app = FastAPI(debug=False)
     app.state.k_recs = config.k_recs
     app.state.auth_token = config.auth_token
+    app.state.known_models = KNOWN_MODELS
 
     add_views(app)
     add_middlewares(app)

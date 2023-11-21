@@ -45,6 +45,6 @@ class BadAuthorizationError(AppException):
         status_code: int = HTTPStatus.UNAUTHORIZED,
         error_key: str = "bad_authorization",
         error_message: str = "Bad auth token",
-        error_loc: tp.Optional[tp.Sequence[str]] = None
+        error_loc: tp.Optional[tp.Sequence[str]] = None,
     ):
         super().__init__(status_code, error_key, error_message, error_loc)
