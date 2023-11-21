@@ -4,6 +4,7 @@
 
 # Mac/OSX
 .DS_Store
+__MACOSX
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -66,4 +67,6 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-
+# data
+*.zip
+*.csv
