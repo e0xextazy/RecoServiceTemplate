@@ -3,7 +3,7 @@ from typing import List
 from fastapi import APIRouter, FastAPI, Request
 from pydantic import BaseModel
 
-from service.api.exceptions import UserNotFoundError
+from service.api.exceptions import BadAuthorizationError, ModelNotFoundError, UserNotFoundError
 from service.log import app_logger
 
 
@@ -27,21 +27,74 @@ async def health() -> str:
     path="/reco/{model_name}/{user_id}",
     tags=["Recommendations"],
     response_model=RecoResponse,
+    responses={
+        404: {
+            "description": "User or Model not found",
+            "content": {
+                "application/json": {
+                    "example": [
+                        {
+                            "error_key": "model_not_found",
+                            "error_message": "Model {model_name} not found",
+                            "error_loc": "null",
+                        },
+                        {
+                            "error_key": "user_not_found",
+                            "error_message": "User {iser_id} not found",
+                            "error_loc": "null",
+                        },
+                    ]
+                }
+            },
+        },
+        401: {
+            "description": "Bad authorization",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "error_key": "bad_authorization",
+                        "error_message": "Bad auth token",
+                        "error_loc": "null",
+                    }
+                }
+            },
+        },
+        422: {
+            "description": "The server was unable to process the request because it contains invalid data",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "error_key": "missing",
+                        "error_message": "Field required",
+                        "error_loc": ["query", "token"],
+                    }
+                }
+            },
+        },
+    },
 )
 async def get_reco(
     request: Request,
     model_name: str,
     user_id: int,
+    token: str,
 ) -> RecoResponse:
     app_logger.info(f"Request for model: {model_name}, user_id: {user_id}")
 
-    # Write your code here
+    k_recs = request.app.state.k_recs
+    auth_token = request.app.state.auth_token
+    known_models = request.app.state.known_models
 
     if user_id > 10**9:
         raise UserNotFoundError(error_message=f"User {user_id} not found")
 
-    k_recs = request.app.state.k_recs
-    reco = list(range(k_recs))
+    if auth_token != token:
+        raise BadAuthorizationError(error_message="Bad auth token")
+
+    reco = known_models.get(
+        model_name, error=ModelNotFoundError(error_message=f"Model {model_name} not found")
+    ).get_reco(user_id, k_recs)
+
     return RecoResponse(user_id=user_id, items=reco)
 
 
