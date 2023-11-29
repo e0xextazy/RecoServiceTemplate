@@ -88,10 +88,10 @@ async def get_reco(
 
     reco = known_models.get(
         model_name, error=ModelNotFoundError(error_message=f"Model {model_name} not found")
-    ).get_reco(str(user_id), k_recs)
+    ).get_reco(user_id, k_recs)
 
-    if len(reco) < 10:
-        reco = known_models["popular_model"].get_reco(str(user_id), k_recs)
+    if not reco:
+        reco = known_models["popular_model"].get_reco(user_id, k_recs)
 
     return RecoResponse(user_id=user_id, items=reco)
 

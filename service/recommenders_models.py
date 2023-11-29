@@ -1,5 +1,14 @@
 import json
+import pickle
 from typing import List
+
+from .settings import ModelsConfig
+
+models_cfg = ModelsConfig()
+
+
+def keystoint(x):
+    return {int(k): v for k, v in x.items()}
 
 
 class SimpleModel:
@@ -8,19 +17,20 @@ class SimpleModel:
 
 
 class PopularModel:
-    def __init__(self, path: str = "service/static_data/popular_model.json") -> None:
-        with open(path, "r", encoding="utf8") as file:
-            self.model = json.load(file)
-        self.general_popular = [10440, 15297, 9728, 13865, 4151, 3734, 2657, 4880, 142, 6809]
+    def __init__(self, pop_by_user_path: str, gen_pop_path: str) -> None:
+        with open(pop_by_user_path, "r", encoding="utf8") as file:
+            self.model = json.load(file, object_hook=keystoint)
+        with open(gen_pop_path, "rb") as file:
+            self.general_popular = pickle.load(file)
 
     def get_reco(self, user_id: int, k_recs: int) -> List[int]:
         return self.model.get(user_id, self.general_popular)
 
 
-class TFiDFModel:
-    def __init__(self, path: str = "service/static_data/tfidf_20_model.json") -> None:
+class TFiDFUserKNNModel:
+    def __init__(self, path: str) -> None:
         with open(path, "r", encoding="utf8") as file:
-            self.model = json.load(file)
+            self.model = json.load(file, object_hook=keystoint)
 
     def get_reco(self, user_id: int, k_recs: int) -> List[int]:
         return self.model.get(user_id, [])
@@ -35,4 +45,10 @@ class ModelsDict(dict):
         return res
 
 
-KNOWN_MODELS = ModelsDict({"simple_model": SimpleModel(), "popular_model": PopularModel(), "tfidf_model": TFiDFModel()})
+KNOWN_MODELS = ModelsDict(
+    {
+        "simple_model": SimpleModel(),
+        "popular_model": PopularModel(models_cfg.popular_by_user_path, models_cfg.general_popular_path),
+        "tfidf_userknn_model": TFiDFUserKNNModel(models_cfg.tfidf_userknn_model_path),
+    }
+)
