@@ -20,9 +20,18 @@ class ServiceConfig(Config):
 
 
 class ModelsConfig(Config):
+    # Popular
     popular_by_user_path: str = "service/static_data/popular_model.json"
     general_popular_path: str = "service/static_data/general_popular.pkl"
+
+    # UserKNN
     tfidf_userknn_model_path: str = "service/static_data/tfidf_20_model.json"
+
+    # LightFM_nmslib
+    index_path: str = "service/static_data/light_fm"
+    ext_u_id2int_u_id_path: str = "service/static_data/ext_u_id2int_u_id.pkl"
+    int_i_id2ext_i_id_path: str = "service/static_data/int_i_id2ext_i_id.pkl"
+    int_u_id2vec_path: str = "service/static_data/int_u_id2vec.pkl"
 
 
 def get_config() -> ServiceConfig:
