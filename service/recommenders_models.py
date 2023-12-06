@@ -1,7 +1,8 @@
-import nmslib
 import json
 import pickle
 from typing import List
+
+import nmslib
 
 from .settings import ModelsConfig
 
