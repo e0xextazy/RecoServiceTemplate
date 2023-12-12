@@ -71,3 +71,4 @@ venv.bak/
 *.zip
 *.csv
 notebooks/*.json
+notebooks/int_u_id2vec.pkl
