@@ -33,6 +33,12 @@ class ModelsConfig(Config):
     int_i_id2ext_i_id_path: str = "service/static_data/int_i_id2ext_i_id.pkl"
     int_u_id2vec_path: str = "service/static_data/int_u_id2vec.pkl"
 
+    # dssm_nmslib
+    dssm_index_path: str = "service/static_data/dssm_256"
+    dssm_ext_u_id2int_u_id_path: str = "service/static_data/dssm_ext_u_id2int_u_id.pkl"
+    dssm_int_i_id2ext_i_id_path: str = "service/static_data/dssm_int_i_id2ext_i_id.pkl"
+    dssm_int_u_id2vec_path: str = "service/static_data/dssm_int_u_id2vec.pkl"
+
 
 def get_config() -> ServiceConfig:
     return ServiceConfig(
