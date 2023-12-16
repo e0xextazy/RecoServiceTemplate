@@ -72,3 +72,6 @@ venv.bak/
 *.csv
 notebooks/*.json
 notebooks/int_u_id2vec.pkl
+notebooks/*.pkl
+runs
+notebooks/recsys_resnet_linear

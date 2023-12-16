@@ -39,7 +39,7 @@ class TFiDFUserKNNModel:
         return self.model.get(user_id, [])
 
 
-class LightFM_nmslib:
+class nmslib_model:
     def __init__(
         self, index_path: str, ext_u_id2int_u_id_path: str, int_i_id2ext_i_id_path: str, int_u_id2vec_path: str
     ) -> None:
@@ -81,11 +81,17 @@ KNOWN_MODELS = ModelsDict(
         "simple_model": SimpleModel(),
         "popular_model": PopularModel(models_cfg.popular_by_user_path, models_cfg.general_popular_path),
         "tfidf_userknn_model": TFiDFUserKNNModel(models_cfg.tfidf_userknn_model_path),
-        "lightfm_nmslib_model": LightFM_nmslib(
+        "lightfm_nmslib_model": nmslib_model(
             models_cfg.index_path,
             models_cfg.ext_u_id2int_u_id_path,
             models_cfg.int_i_id2ext_i_id_path,
             models_cfg.int_u_id2vec_path,
+        ),
+        "dssm_nmslib_model": nmslib_model(
+            models_cfg.dssm_index_path,
+            models_cfg.dssm_ext_u_id2int_u_id_path,
+            models_cfg.dssm_int_i_id2ext_i_id_path,
+            models_cfg.dssm_int_u_id2vec_path,
         ),
     }
 )
