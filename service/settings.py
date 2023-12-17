@@ -39,6 +39,9 @@ class ModelsConfig(Config):
     dssm_int_i_id2ext_i_id_path: str = "service/static_data/dssm_int_i_id2ext_i_id.pkl"
     dssm_int_u_id2vec_path: str = "service/static_data/dssm_int_u_id2vec.pkl"
 
+    # lfm ranker model
+    lfm_ranker_path: str = "service/static_data/double.json"
+
 
 def get_config() -> ServiceConfig:
     return ServiceConfig(
