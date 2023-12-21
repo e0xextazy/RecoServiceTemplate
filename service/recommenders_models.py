@@ -67,7 +67,7 @@ class nmslib_model:
         return ext_recos
 
 
-class LFM_ranker_Model:
+class LightFMLGBMModel:
     def __init__(self, model_path: str) -> None:
         with open(model_path, "r", encoding="utf8") as file:
             self.model = json.load(file, object_hook=keystoint)
@@ -102,6 +102,6 @@ KNOWN_MODELS = ModelsDict(
             models_cfg.dssm_int_i_id2ext_i_id_path,
             models_cfg.dssm_int_u_id2vec_path,
         ),
-        "lfm_ranker_model": LFM_ranker_Model(models_cfg.lfm_ranker_path),
+        "lfm_ranker_model": LightFMLGBMModel(models_cfg.lfm_ranker_path),
     }
 )
